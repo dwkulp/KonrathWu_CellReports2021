@@ -1,0 +1,20 @@
+<ROSETTASCRIPTS>
+      <RESIDUE_SELECTORS>
+          <Index name="npos" resnums="%%positions%%"/>
+     </RESIDUE_SELECTORS>
+	<MOVERS>
+	    <MutateResidue name="mutate" residue_selector="npos" new_res="ASN"/>
+		<SimpleGlycosylateMover name="glycosylate" positions="%%positions%%" glycosylation="%%glycosylation%%" strip_existing="1" />
+		<GlycanTreeModeler name="model_glycans" quench_mode="true" rounds="5" glycan_sampler_rounds="1" final_min_pack_min="true" cartmin="true" window_size="2" layer_size="5" use_conformer_probs="0" use_gaussian_sampling="1" shear="1" hybrid_protocol="1"/>
+		<GlycanTreeModeler name="tree_relax" quench_mode="0" layer_size="1" window_size="0" scorefxn="commandline" glycan_sampler_rounds="100" rounds="1" use_conformer_probs="0" use_gaussian_sampling="1" shear="1" hybrid_protocol="1" />
+		<DumpPdb name="dump_pdb" fname="%%glycosylation%%.pdb" />
+	</MOVERS>
+	<PROTOCOLS>
+	    <Add mover_name="mutate" />
+		<Add mover_name="glycosylate" />
+		<Add mover_name="model_glycans" />
+		<Add mover_name="tree_relax" />
+		<Add mover_name="dump_pdb" />
+	</PROTOCOLS>
+
+</ROSETTASCRIPTS>
